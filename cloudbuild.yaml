@@ -2,16 +2,16 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   id: Build
   args:
-	- 'build'
-	- '-t'
-	- 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA'
+  - 'build'
+  - '-t'
+  - 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA'
   - '.'
 
 - name: 'gcr.io/cloud-builders/docker'
-	id: Push
-	args:
-	- 'push'
-	- 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA'
+  id: Push
+  args:
+  - 'push'
+  - 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA'
 
 # - name: 'gcr.io/cloud-builders/git'
 #   secretEnv: ['SSH_KEY']
