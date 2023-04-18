@@ -54,6 +54,8 @@ steps:
   - |
     set -x && \
     cd riset-devsecops-sample-app-env && \
+    git config --global user.email $(git log --format='%an <%ae>' -n 1 HEAD)
+    git config --global user.name $(git log --format='%an <%ae>' -n 1 HEAD)
     git add deployment.yaml && \
     git commit -m "Deploying image asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:${SHORT_SHA}
     Built from commit ${COMMIT_SHA} of repository hello-cloudbuild-app
