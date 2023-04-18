@@ -35,6 +35,31 @@ steps:
   - name: 'ssh'
     path: /root/.ssh
 
+# This step generates the new manifest
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Generate manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+     cd riset-devsecops-sample-app-env
+     sed -i "s#asia-southeast2-docker.pkg.*#asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA#g" deployment.yaml
+
+# This step pushes the manifest back to hello-cloudbuild-env
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Push manifest
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    set -x && \
+    cd riset-devsecops-sample-app-env && \
+    git add deployment.yaml && \
+    git commit -m "Deploying image asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:${SHORT_SHA}
+    Built from commit ${COMMIT_SHA} of repository hello-cloudbuild-app
+    Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
+    git push origin candidate
+
 availableSecrets:
   secretManager:
   - versionName: projects/1078293032607/secrets/github_ssh_keys/versions/1
