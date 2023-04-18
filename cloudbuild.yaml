@@ -1,10 +1,11 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-	id: Build
-	args:
+  id: Build
+  args:
 	- 'build'
 	- '-t'
 	- 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA'
+  - '.'
 
 - name: 'gcr.io/cloud-builders/docker'
 	id: Push
@@ -12,28 +13,28 @@ steps:
 	- 'push'
 	- 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA'
 
-- name: 'gcr.io/cloud-builders/git'
-  secretEnv: ['SSH_KEY']
-  entrypoint: 'bash'
-  args:
-  - -c
-  - |
-    echo "$$SSH_KEY" >> /root/.ssh/id_rsa
-    chmod 400 /root/.ssh/id_rsa
-    ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
-  volumes:
-  - name: 'ssh'
-    path: /root/.ssh
+# - name: 'gcr.io/cloud-builders/git'
+#   secretEnv: ['SSH_KEY']
+#   entrypoint: 'bash'
+#   args:
+#   - -c
+#   - |
+#     echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+#     chmod 400 /root/.ssh/id_rsa
+#     ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+#   volumes:
+#   - name: 'ssh'
+#     path: /root/.ssh
 
-- name: 'gcr.io/cloud-builders/git'
-  args:
-  - clone
-  - git@github.com:khhini/riset-devsecops-sample-app-env.git
-  volumes:
-  - name: 'ssh'
-    path: /root/.ssh
+# - name: 'gcr.io/cloud-builders/git'
+#   args:
+#   - clone
+#   - git@github.com:khhini/riset-devsecops-sample-app-env.git
+#   volumes:
+#   - name: 'ssh'
+#     path: /root/.ssh
 
-availableSecrets:
-  secretManager:
-  - versionName: projects/1078293032607/secrets/github_ssh_keys/versions/1
-    env: 'SSH_KEY'
+# availableSecrets:
+#   secretManager:
+#   - versionName: projects/1078293032607/secrets/github_ssh_keys/versions/1
+#     env: 'SSH_KEY'
