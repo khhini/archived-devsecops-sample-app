@@ -30,6 +30,8 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args:
   - clone
+  - '-b'
+  - candidate
   - git@github.com:khhini/riset-devsecops-sample-app-env.git
   volumes:
   - name: 'ssh'
