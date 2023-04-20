@@ -1,5 +1,6 @@
 steps:
 - name: golang:1.20
+  id: Test
   entrypoint: /bin/bash
   args: 
     - -c
@@ -22,6 +23,7 @@ steps:
   - 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA'
 
 - name: 'gcr.io/cloud-builders/git'
+  id: Retrieve SSH key
   secretEnv: ['SSH_KEY']
   entrypoint: 'bash'
   args:
@@ -36,6 +38,7 @@ steps:
     path: /root/.ssh
 
 - name: 'gcr.io/cloud-builders/git'
+  id: Clone ENV repo
   args:
   - clone
   - '-b'
