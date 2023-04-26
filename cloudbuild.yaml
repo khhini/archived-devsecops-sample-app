@@ -42,7 +42,7 @@ steps:
   args:
   - clone
   - '-b'
-  - candidate
+  - kustomize
   - git@github.com:khhini/riset-devsecops-sample-app-env.git
   volumes:
   - name: 'ssh'
@@ -56,7 +56,7 @@ steps:
   - '-c'
   - |
      cd riset-devsecops-sample-app-env
-     sed -i "s#asia-southeast2-docker.pkg.*#asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:$SHORT_SHA#g" kubernetes.yaml
+     sed -i "s#newTag:.*#newTag: \"$SHORT_SHA\"#g" overlays/stage/kustomization.yaml
 
 # This step pushes the manifest back to hello-cloudbuild-env
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -66,14 +66,14 @@ steps:
   - '-c'
   - |
     set -x && \
-    cd riset-devsecops-sample-app-env && \
+    cd riset-devsecops-sample-app-env
     git config --global user.email $(git log --format='%an <%ae>' -n 1 HEAD)
     git config --global user.name $(git log --format='%an <%ae>' -n 1 HEAD)
-    git add kubernetes.yaml && \
-    git commit -m "Deploying image asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:${SHORT_SHA}
-    Built from commit ${COMMIT_SHA} of repository hello-cloudbuild-app
-    Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
-    git push origin candidate
+    git add overlays/stage/kustomization.yaml
+    git commit -m "Deploying image asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:${SHORT_SHA} to staging env
+    Built from commit ${COMMIT_SHA} of repository riset-devsecops-sample-app
+    Author: $(git log --format='%an <%ae>' -n 1 HEAD)"
+    git push origin kustomize
   volumes:
   - name: 'ssh'
     path: /root/.ssh
