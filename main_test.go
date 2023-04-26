@@ -25,7 +25,19 @@ func TestHelloByName(t *testing.T) {
 	expectedRes := `{"message":"Hello, kiki!."}`
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/kiki", nil)
+	req, _ := http.NewRequest("GET", "/hello/kiki", nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, expectedRes, w.Body.String())
+}
+
+func TestPing(t *testing.T) {
+	router := SetupRouter()
+	expectedRes := `{"ping":"pong"}`
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/ping", nil)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)

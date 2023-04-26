@@ -14,11 +14,17 @@ func SetupRouter() *gin.Engine {
 			"message": "Hello, Worlds!.",
 		})
 	})
-	router.GET("/:name", func(c *gin.Context) {
+	router.GET("/hello/:name", func(c *gin.Context) {
 		name := c.Param("name")
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": fmt.Sprintf("Hello, %s!.", name),
+		})
+	})
+
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"ping": "pong",
 		})
 	})
 	return router
