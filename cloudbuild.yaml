@@ -71,7 +71,8 @@ steps:
     git config --global user.name $(git log --format='%an <%ae>' -n 1 HEAD)
     git add overlays/stage/kustomization.yaml
     git commit -m "Deploying image asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:${SHORT_SHA} to staging env
-    Built from commit ${COMMIT_SHA} of repository riset-devsecops-sample-app
+    Built from commit ${COMMIT_SHA} of repository ${REPO_NAME}
+    Commit references https://github.com/khhini/${REPO_NAME}/commit/${COMMIT_SHA}
     Author: $(git log --format='%an <%ae>' -n 1 HEAD)"
     git push origin kustomize
   volumes:
