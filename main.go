@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,6 +26,12 @@ func SetupRouter() *gin.Engine {
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"ping": "pong",
+		})
+	})
+
+	router.GET("/health_check", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"check": os.Getenv("DB_USERNAME"),
 		})
 	})
 	return router
