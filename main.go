@@ -47,7 +47,7 @@ func SetupRouter() *gin.Engine {
 
 		result, err := client.AccessSecretVersion(ctx, accessRequest)
 		if err != nil {
-			log.Fatalf("failed to access secret version: %v", err)
+			log.Fatalf("failed to access secrets version: %v", err)
 		}
 		secrets := fmt.Sprintf("%s", result.Payload.Data)
 		c.JSON(http.StatusOK, gin.H{
