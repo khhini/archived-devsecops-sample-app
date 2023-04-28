@@ -47,8 +47,8 @@ func TestPing(t *testing.T) {
 
 func TestHealthCheck(t *testing.T) {
 	router := SetupRouter()
-	os.Setenv("DB_USERNAME", "superduperuser")
-	expectedRes := `{"check":"superduperuser"}`
+	os.Setenv("DB_PASSWORD_SECRET_MANAGER_REF", "projects/1078293032607/secrets/sample-app-stage-db-username/versions/latest")
+	expectedRes := `{"secrets":"superduperuser"}`
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/health_check", nil)

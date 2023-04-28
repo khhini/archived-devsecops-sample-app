@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,8 +34,24 @@ func SetupRouter() *gin.Engine {
 	})
 
 	router.GET("/health_check", func(c *gin.Context) {
+		ctx := context.Background()
+		client, err := secretmanager.NewClient(ctx)
+		if err != nil {
+			log.Fatalf("faild to setup client: %v", err)
+		}
+		defer client.Close()
+
+		accessRequest := &secretmanagerpb.AccessSecretVersionRequest{
+			Name: os.Getenv("DB_PASSWORD_SECRET_MANAGER_REF"),
+		}
+
+		result, err := client.AccessSecretVersion(ctx, accessRequest)
+		if err != nil {
+			log.Fatalf("failed to access secret version: %v", err)
+		}
+		secrets := fmt.Sprintf("%s", result.Payload.Data)
 		c.JSON(http.StatusOK, gin.H{
-			"check": os.Getenv("DB_USERNAME"),
+			"secrets": secrets,
 		})
 	})
 	return router
