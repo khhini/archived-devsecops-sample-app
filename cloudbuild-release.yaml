@@ -65,7 +65,7 @@ steps:
       cd riset-devsecops-sample-app-env
       git config --global user.email $(git log --format='%an <%ae>' -n 1 HEAD)
       git config --global user.name $(git log --format='%an <%ae>' -n 1 HEAD)
-      git add overlays/stage/kustomization.yaml
+      git add overlays/prod/kustomization.yaml
       git commit -m "Relase ${TAG_NAME} from image asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app:${SHORT_SHA}
       Built from commit https://github.com/khhini/${REPO_NAME}/commit/${COMMIT_SHA}
       Author: $(git log --format='%an <%ae>' -n 1 HEAD)"
