@@ -11,7 +11,7 @@ import (
 
 func TestHello(t *testing.T) {
 	router := SetupRouter()
-	expectedRes := `{"message":"Hello, Notifier!."}`
+	expectedRes := `{"message":"Hello, World!."}`
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/", nil)
