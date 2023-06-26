@@ -57,6 +57,8 @@ steps:
   - |
      cd riset-devsecops-sample-app-env
      sed -i "s#newTag:.*#newTag: \"$SHORT_SHA\"#g" overlays/stage/kustomization.yaml
+     sed -i "s#_APP_VERSION:.*#_APP_VERSION: $TAG_NAME#g" overlays/stage/cloudbuild.yaml
+     sed -i "s#_APP_GIT_COMMIT:.*#_APP_GIT_COMMIT: https://github.com/cisdi-dev/$REPO_NAME/commit/$COMMIT_SHA#g" ${_PROD_ENV_CLOUDBUILD_PATH}
 
 # This step pushes the manifest back to hello-cloudbuild-env
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -77,6 +79,13 @@ steps:
   volumes:
   - name: 'ssh'
     path: /root/.ssh
+
+substitutions:
+  _APP_NAME: sample-app
+  _APP_VERSION: $TAG_NAME
+  _APP_ROLE: testing
+  _APP_IMAGE: asia-southeast2-docker.pkg.dev/$PROJECT_ID/khhini-repository/go-sample-app
+  _APP_GIT_COMMIT: https://github.com/cisdi-dev/$REPO_NAME/commit/$COMMIT_SHA
 
 availableSecrets:
   secretManager:
