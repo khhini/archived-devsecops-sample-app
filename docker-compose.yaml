@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  sonar-qube:
+    image: sonarqube:latest
+    environment:
+    - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    ports:
+      - 9000:9000
+  # sonar-scanner:
+  #   image: sonarsource/sonar-scanner-cli
+  #   environment:
+  #     - SONAR_HOST_URL="http://localhost:9000"
+  #     - SONAR_SCANNER_OPTS='-Dsonar.projectKey=riset-devsecops-sample-app'
+  #     - SONAR_TOKEN=sqp_7c7e496daef5fae1ae505b09d176335762130afc
+  #   volumes:
+  #     - "./:/usr/src"
