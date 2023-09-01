@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-app-dpl
+  namespace: sample-app
+  labels:
+    app: sample-app
+    release: "1.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-app
+      release: "1.0"
+  template:
+    metadata:
+      labels:
+        app: sample-app
+        release: "1.0"
+    spec:
+      containers:
+      - name: sample-app
+        image: asia-southeast2-docker.pkg.dev/dev-devsecops-exp/khhini-dev/sample-app/test-prometheus:1.0
+        readinessProbe:
+          httpGet: 
+            path: /hello
+            port: 8080
+          periodSeconds: 1
+        livenessProbe:
+          httpGet:
+            path: /hello
+            port: 8080

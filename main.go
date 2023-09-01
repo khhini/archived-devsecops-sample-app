@@ -3,13 +3,18 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
+	router.GET("/hello", func(c *gin.Context) {
+		delay, _ := strconv.Atoi(c.Query("delay"))
+		time.Sleep(time.Duration(delay) * time.Millisecond)
+
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Hello, Worlds!.",
 		})
